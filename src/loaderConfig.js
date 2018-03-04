@@ -2,15 +2,6 @@ const href = location.href;
 var appName = href.substring(href.lastIndexOf('/') + 1, href.indexOf(".html"));
 var path = href.substring(0, href.lastIndexOf('/'));
 
-// var api = `http://ycabon.esri.com/arcgis-js-api-4/`;
-// var node_modules = `http://ycabon.esri.com/arcgis-js-api-4/node_modules/`;
-
-// var api = `http://bzh.esri.com/arcgis-js-api-4/`;
-// var node_modules = `http://bzh.esri.com/arcgis-js-api-4/`;
-
-// var api = `https://jsdev.arcgis.com/4.7/`;
-// var node_modules = `https://jsdev.arcgis.com/4.7/`;
-
 var api = `https://js.arcgis.com/4.7/`;
 var node_modules = `https://js.arcgis.com/4.7/`;
 
