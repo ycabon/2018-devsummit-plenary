@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title></title>
+
+  <!-- <link rel="stylesheet" href="https://js.arcgis.com/4.6/esri/themes/light/main.css"> -->
+  <link rel="stylesheet" href="./styles/dist/my-theme/main.css">
+  <link rel="stylesheet" href="./src/widgets/Header.css">
+  <link rel="stylesheet" href="./src/widgets/DropTarget.css">
+  <link rel="stylesheet" href="./src/widgets/CityStats.css">
+  <link rel="stylesheet" href="./src/widgets/IconButton.css">
+  <link rel="stylesheet" href="./src/1-new-york/app.css">
+</head>
+
+<body>
+  <div id="applicationDiv">
+    <div id="viewDiv"></div>
+    <div id="sliderContainer" class="esri-widget">
+      <span id="sliderValue"></span>
+      <div id="sliderInnerContainer">
+        <div id="sliderLabels">
+          <span>1880</span>
+          <span>2017</span>
+        </div>
+        <div id="rangeWrapper">
+          <input id="slider" type="range" min="1880" max="2017" step="1" value="1984" />
+        </div>
+      </div>
+      <div id="playButton" class="esri-widget esri-widget-button toggle-button">
+        <div>
+          <span class="toggle-button-icon esri-icon-play" aria-label="play icon"></span>          Play</div>
+        <div>
+          <span class="toggle-button-icon esri-icon-pause" aria-label="pause icon"></span>          Pause</div>
+      </div>
+    </div>
+  </div>
+  <script src="src/loaderConfig.js"></script>
+  <!-- <script src="http://ycabon.esri.com/arcgis-js-api-4/dojo/dojo.js"></script> -->
+  <script src="https://js.arcgis.com/4.7/dojo/dojo.js"></script>
+</body>
+
+</html>

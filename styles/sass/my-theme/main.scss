@@ -1,0 +1,38 @@
+/*
+  Theme: My Theme
+*/
+
+@import "../base/colors/scss/variables.scss";
+// ↳ https://github.com/Esri/calcite-colors.git
+
+$text_size: 12px;
+// $font_family;
+// $line_height;
+
+$text_color              : rgb(211, 211, 211);
+$background_color        : #181818;
+
+$anchor_color            : white;
+
+$anchor_hover_color      : rgba($anchor_color, 0.75);
+$button_text_color       : $anchor_color;
+$button_text_hover_color : $anchor_color;
+$border_color            : rgba($anchor_color, 0.2);
+
+// Selected
+$selected_border_color      : $button_text_color;
+$selected_background_color  : #000000;
+
+@import "../base/core";
+
+.esri-view {
+  background: black;
+}
+
+
+.esri-view-width-xsmall {
+
+  .esri-expand__container--expanded {
+    background: #181818
+  }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Custom theme preview</title>
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="../dist/my-theme/main.css">
+  <script src="https://js.arcgis.com/4.6/"></script>
+  <script>
+    require([
+      "esri/Map",
+      "esri/widgets/Search",
+      "esri/views/SceneView",
+      "dojo/domReady!"
+    ], function(Map, Search, SceneView) {
+
+      var map = new Map({
+        basemap: "streets"
+      });
+
+      var view = new SceneView({
+        container: "viewDiv",
+        map: map,
+        zoom: 18,
+        center: [-117.1870380, 34.0573220]
+      });
+
+      var search = new Search({
+        view: view
+      });
+
+      view.ui.add(search, "top-right");
+
+      view.when(function() {
+        search.search("El Paso, TX");
+      });
+
+    });
+  </script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>
