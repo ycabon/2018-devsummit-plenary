@@ -16,7 +16,6 @@ import Home = require("esri/widgets/Home");
 import Expand = require("esri/widgets/Expand");
 import Zoom = require("esri/widgets/Zoom");
 import Legend = require("esri/widgets/Legend");
-import BasemapToggle = require("esri/widgets/BasemapToggle");
 import FullScreen = require("esri/widgets/Fullscreen");
 import { throttle } from "@dojo/core/util";
 
@@ -87,14 +86,6 @@ const mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
   const legend = new Legend({
     view
   });
-  const toggle = new BasemapToggle({
-    view,
-    nextBasemap: {
-      portalItem: {
-        id: "5679afc165a841838d919bee62424422"
-      }
-    }
-  });
 
   const target = new DropTarget<CSVLayer>({
     view,
@@ -154,7 +145,6 @@ const mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
   view.ui.add(header);
   view.ui.add(zoom, "bottom-left");
   view.ui.add(home, "bottom-left");
-  view.ui.add(toggle, "bottom-right");
   await view.when();
 
   target.on("drop", (event) => {

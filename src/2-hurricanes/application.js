@@ -33,7 +33,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic", "esri/Viewpoint", "esri/geometry/Circle", "esri/renderers/UniqueValueRenderer", "esri/symbols/PictureMarkerSymbol", "esri/views/MapView", "esri/widgets/Home", "esri/widgets/Zoom", "esri/widgets/Legend", "esri/widgets/BasemapToggle", "@dojo/core/util", "../widgets/Header", "../widgets/DropTarget", "../widgets/IconButton", "../widgets/ToggleIconButton", "../widgets/HurricaneInfo"], function (require, exports, Map, CSVLayer, Graphic, Viewpoint, Circle, UniqueValueRenderer, PictureMarkerSymbol, MapView, Home, Zoom, Legend, BasemapToggle, util_1, Header_1, DropTarget_1, IconButton_1, ToggleIconButton_1, HurricaneInfo_1) {
+define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic", "esri/Viewpoint", "esri/geometry/Circle", "esri/renderers/UniqueValueRenderer", "esri/symbols/PictureMarkerSymbol", "esri/views/MapView", "esri/widgets/Home", "esri/widgets/Zoom", "esri/widgets/Legend", "@dojo/core/util", "../widgets/Header", "../widgets/DropTarget", "../widgets/IconButton", "../widgets/ToggleIconButton", "../widgets/HurricaneInfo"], function (require, exports, Map, CSVLayer, Graphic, Viewpoint, Circle, UniqueValueRenderer, PictureMarkerSymbol, MapView, Home, Zoom, Legend, util_1, Header_1, DropTarget_1, IconButton_1, ToggleIconButton_1, HurricaneInfo_1) {
     "use strict";
     var _this = this;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -43,7 +43,7 @@ define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic"
     var header;
     var mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
     (function () { return __awaiter(_this, void 0, void 0, function () {
-        var zoom, home, legend, toggle, target, bookmark1, bookmark2;
+        var zoom, home, legend, target, bookmark1, bookmark2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -95,14 +95,6 @@ define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic"
                     });
                     legend = new Legend({
                         view: view
-                    });
-                    toggle = new BasemapToggle({
-                        view: view,
-                        nextBasemap: {
-                            portalItem: {
-                                id: "5679afc165a841838d919bee62424422"
-                            }
-                        }
                     });
                     target = new DropTarget_1.default({
                         view: view,
@@ -159,7 +151,6 @@ define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic"
                     view.ui.add(header);
                     view.ui.add(zoom, "bottom-left");
                     view.ui.add(home, "bottom-left");
-                    view.ui.add(toggle, "bottom-right");
                     return [4 /*yield*/, view.when()];
                 case 1:
                     _a.sent();
