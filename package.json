@@ -2,12 +2,8 @@
   "name": "2018-devsummit-plenary",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
+  "author": "Yann Cabon",
+  "license": "MIT",
   "devDependencies": {
     "typescript": "^2.7.2"
   },
