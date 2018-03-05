@@ -61,15 +61,7 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                     layerView.queryFeatureCount(_this.createCountQuery())
                 ]);
             })
-                .then(function (results) {
-                _this.statistics = results[0].value && results[0].value[0].attributes;
-                _this.count = results[1].value;
-                _this._statsPromise = null;
-                // if a stats has been asked, start a new batch
-                if (_this._refresh) {
-                    _this.updateStatistics();
-                }
-            });
+                .then(function (results) { return _this.displayResults(results); });
         };
         CityStats.prototype.createCountQuery = function () {
             return new Query({
@@ -99,6 +91,15 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                     }
                 ]
             });
+        };
+        CityStats.prototype.displayResults = function (results) {
+            this.statistics = results[0].value && results[0].value[0].attributes;
+            this.count = results[1].value;
+            this._statsPromise = null;
+            // if a stats has been asked, start a new batch
+            if (this._refresh) {
+                this.updateStatistics();
+            }
         };
         CityStats.prototype.render = function () {
             var classes = {};
