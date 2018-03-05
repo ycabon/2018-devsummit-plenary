@@ -80,29 +80,34 @@ export default class CityStats extends declared(Widget) {
     this._statsPromise = this.view.whenLayerView(this.layer)
       .then((layerView: FeatureLayerView) => {
 
+        // Define query parameters
+        const where = `CNSTRCT_YR <= ${this.year}`;
+        const geometry = this.view.extent;
+        const outStatistics = [
+          {
+            onStatisticField: "HEIGHTROOF",
+            outStatisticFieldName: "MAX_HEIGHTROOF",
+            statisticType: "max"
+          },
+          {
+            onStatisticField: "CNSTRCT_YR",
+            outStatisticFieldName: "AVG_CNSTRCT_YR",
+            statisticType: "avg"
+          }
+        ];
+
         const countPromise = layerView.queryFeatureCount(
           new Query({
-            where: `CNSTRCT_YR <= ${this.year}`,
-            geometry: this.view.extent
+            where,
+            geometry
           })
         );
 
         const buildStatsPromise = layerView.queryFeatures(
           new Query({
-            where: `CNSTRCT_YR <= ${this.year}`,
-            geometry: this.view.extent,
-            outStatistics: [
-              {
-                onStatisticField: "HEIGHTROOF",
-                outStatisticFieldName: "MAX_HEIGHTROOF",
-                statisticType: "max"
-              },
-              {
-                onStatisticField: "CNSTRCT_YR",
-                outStatisticFieldName: "AVG_CNSTRCT_YR",
-                statisticType: "avg"
-              }
-            ]
+            where,
+            geometry,
+            outStatistics
           })
         );
 

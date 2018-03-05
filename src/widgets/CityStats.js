@@ -56,25 +56,29 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
             this._refresh = false;
             this._statsPromise = this.view.whenLayerView(this.layer)
                 .then(function (layerView) {
+                // Define query parameters
+                var where = "CNSTRCT_YR <= " + _this.year;
+                var geometry = _this.view.extent;
+                var outStatistics = [
+                    {
+                        onStatisticField: "HEIGHTROOF",
+                        outStatisticFieldName: "MAX_HEIGHTROOF",
+                        statisticType: "max"
+                    },
+                    {
+                        onStatisticField: "CNSTRCT_YR",
+                        outStatisticFieldName: "AVG_CNSTRCT_YR",
+                        statisticType: "avg"
+                    }
+                ];
                 var countPromise = layerView.queryFeatureCount(new Query({
-                    where: "CNSTRCT_YR <= " + _this.year,
-                    geometry: _this.view.extent
+                    where: where,
+                    geometry: geometry
                 }));
                 var buildStatsPromise = layerView.queryFeatures(new Query({
-                    where: "CNSTRCT_YR <= " + _this.year,
-                    geometry: _this.view.extent,
-                    outStatistics: [
-                        {
-                            onStatisticField: "HEIGHTROOF",
-                            outStatisticFieldName: "MAX_HEIGHTROOF",
-                            statisticType: "max"
-                        },
-                        {
-                            onStatisticField: "CNSTRCT_YR",
-                            outStatisticFieldName: "AVG_CNSTRCT_YR",
-                            statisticType: "avg"
-                        }
-                    ]
+                    where: where,
+                    geometry: geometry,
+                    outStatistics: outStatistics
                 }));
                 return promiseUtils_1.eachAlways([
                     buildStatsPromise,
