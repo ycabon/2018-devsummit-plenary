@@ -84,16 +84,7 @@ export default class CityStats extends declared(Widget) {
           layerView.queryFeatureCount(this.createCountQuery())
         ])
       })
-      .then(results => {
-        this.statistics = results[0].value && results[0].value[0].attributes;
-        this.count = results[1].value;
-
-        this._statsPromise = null;
-        // if a stats has been asked, start a new batch
-        if (this._refresh) {
-          this.updateStatistics();
-        }
-      })
+      .then(results => this.displayResults(results));
   }
 
   createCountQuery(): Query {
@@ -125,6 +116,17 @@ export default class CityStats extends declared(Widget) {
         }
       ]
     });
+  }
+
+  displayResults(results: any): any {
+    this.statistics = results[0].value && results[0].value[0].attributes;
+    this.count = results[1].value;
+
+    this._statsPromise = null;
+    // if a stats has been asked, start a new batch
+    if (this._refresh) {
+      this.updateStatistics();
+    }
   }
 
   render() {
