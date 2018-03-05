@@ -57,8 +57,8 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
             this._statsPromise = this.view.whenLayerView(this.layer)
                 .then(function (layerView) {
                 return promiseUtils_1.eachAlways([
-                    layerView.queryFeatures(_this.createStatisticsQuery()),
-                    layerView.queryFeatureCount(_this.createCountQuery())
+                    layerView.queryFeatureCount(_this.createCountQuery()),
+                    layerView.queryFeatures(_this.createStatisticsQuery())
                 ]);
             })
                 .then(function (results) { return _this.displayResults(results); });
@@ -78,11 +78,6 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                         onStatisticField: "HEIGHTROOF",
                         outStatisticFieldName: "MAX_HEIGHTROOF",
                         statisticType: "max"
-                    },
-                    {
-                        onStatisticField: "NUM_FLOORS",
-                        outStatisticFieldName: "AVG_NUM_FLOORS",
-                        statisticType: "avg"
                     },
                     {
                         onStatisticField: "CNSTRCT_YR",

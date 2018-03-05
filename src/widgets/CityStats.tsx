@@ -80,8 +80,8 @@ export default class CityStats extends declared(Widget) {
     this._statsPromise = this.view.whenLayerView(this.layer)
       .then((layerView: FeatureLayerView) => {
         return eachAlways([
-          layerView.queryFeatures(this.createStatisticsQuery()),
-          layerView.queryFeatureCount(this.createCountQuery())
+          layerView.queryFeatureCount(this.createCountQuery()),
+          layerView.queryFeatures(this.createStatisticsQuery())
         ])
       })
       .then(results => this.displayResults(results));
@@ -103,11 +103,6 @@ export default class CityStats extends declared(Widget) {
           onStatisticField: "HEIGHTROOF",
           outStatisticFieldName: "MAX_HEIGHTROOF",
           statisticType: "max"
-        },
-        {
-          onStatisticField: "NUM_FLOORS",
-          outStatisticFieldName: "AVG_NUM_FLOORS",
-          statisticType: "avg"
         },
         {
           onStatisticField: "CNSTRCT_YR",
