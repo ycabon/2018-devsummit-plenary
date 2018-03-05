@@ -76,47 +76,47 @@ export default class CityStats extends declared(Widget) {
     }
 
     this._refresh = false;
-
     this._statsPromise = this.view.whenLayerView(this.layer)
-      .then((layerView: FeatureLayerView) => {
+      .then((layerView: FeatureLayerView) => this.queryStatistics(layerView));
+  }
 
-        // Define query parameters
-        const where = `CNSTRCT_YR <= ${this.year}`;
-        const geometry = this.view.extent;
-        const outStatistics = [
-          {
-            onStatisticField: "HEIGHTROOF",
-            outStatisticFieldName: "MAX_HEIGHTROOF",
-            statisticType: "max"
-          },
-          {
-            onStatisticField: "CNSTRCT_YR",
-            outStatisticFieldName: "AVG_CNSTRCT_YR",
-            statisticType: "avg"
-          }
-        ];
+  queryStatistics(layerView: FeatureLayerView) {
+    // Define query parameters
+    const where = `CNSTRCT_YR <= ${this.year}`;
+    const geometry = this.view.extent;
+    const outStatistics = [
+      {
+        onStatisticField: "HEIGHTROOF",
+        outStatisticFieldName: "MAX_HEIGHTROOF",
+        statisticType: "max"
+      },
+      {
+        onStatisticField: "CNSTRCT_YR",
+        outStatisticFieldName: "AVG_CNSTRCT_YR",
+        statisticType: "avg"
+      }
+    ];
 
-        const countPromise = layerView.queryFeatureCount(
-          new Query({
-            where,
-            geometry
-          })
-        );
-
-        const buildStatsPromise = layerView.queryFeatures(
-          new Query({
-            where,
-            geometry,
-            outStatistics
-          })
-        );
-
-        return eachAlways([
-          buildStatsPromise,
-          countPromise
-        ])
+    const countPromise = layerView.queryFeatureCount(
+      new Query({
+        where,
+        geometry
       })
-      .then(results => this.displayResults(results));
+    );
+
+    const buildStatsPromise = layerView.queryFeatures(
+      new Query({
+        where,
+        geometry,
+        outStatistics
+      })
+    );
+
+    return eachAlways([
+      buildStatsPromise,
+      countPromise
+    ])
+    .then((results: any) => this.displayResults(results));
   }
 
   displayResults(results: any): any {
