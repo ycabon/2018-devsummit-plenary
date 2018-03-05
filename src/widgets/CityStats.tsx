@@ -79,38 +79,39 @@ export default class CityStats extends declared(Widget) {
 
     this._statsPromise = this.view.whenLayerView(this.layer)
       .then((layerView: FeatureLayerView) => {
+
+        const countPromise = layerView.queryFeatureCount(
+          new Query({
+            where: `CNSTRCT_YR <= ${this.year}`,
+            geometry: this.view.extent
+          })
+        );
+
+        const buildStatsPromise = layerView.queryFeatures(
+          new Query({
+            where: `CNSTRCT_YR <= ${this.year}`,
+            geometry: this.view.extent,
+            outStatistics: [
+              {
+                onStatisticField: "HEIGHTROOF",
+                outStatisticFieldName: "MAX_HEIGHTROOF",
+                statisticType: "max"
+              },
+              {
+                onStatisticField: "CNSTRCT_YR",
+                outStatisticFieldName: "AVG_CNSTRCT_YR",
+                statisticType: "avg"
+              }
+            ]
+          })
+        );
+
         return eachAlways([
-          layerView.queryFeatureCount(this.createCountQuery()),
-          layerView.queryFeatures(this.createStatisticsQuery())
+          buildStatsPromise,
+          countPromise
         ])
       })
       .then(results => this.displayResults(results));
-  }
-
-  createCountQuery(): Query {
-    return new Query({
-      where: `CNSTRCT_YR <= ${this.year}`,
-      geometry: this.view.extent
-    });
-  }
-
-  createStatisticsQuery(): Query {
-    return new Query({
-      where: `CNSTRCT_YR <= ${this.year}`,
-      geometry: this.view.extent,
-      outStatistics: [
-        {
-          onStatisticField: "HEIGHTROOF",
-          outStatisticFieldName: "MAX_HEIGHTROOF",
-          statisticType: "max"
-        },
-        {
-          onStatisticField: "CNSTRCT_YR",
-          outStatisticFieldName: "AVG_CNSTRCT_YR",
-          statisticType: "avg"
-        }
-      ]
-    });
   }
 
   displayResults(results: any): any {

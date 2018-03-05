@@ -56,36 +56,32 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
             this._refresh = false;
             this._statsPromise = this.view.whenLayerView(this.layer)
                 .then(function (layerView) {
+                var countPromise = layerView.queryFeatureCount(new Query({
+                    where: "CNSTRCT_YR <= " + _this.year,
+                    geometry: _this.view.extent
+                }));
+                var buildStatsPromise = layerView.queryFeatures(new Query({
+                    where: "CNSTRCT_YR <= " + _this.year,
+                    geometry: _this.view.extent,
+                    outStatistics: [
+                        {
+                            onStatisticField: "HEIGHTROOF",
+                            outStatisticFieldName: "MAX_HEIGHTROOF",
+                            statisticType: "max"
+                        },
+                        {
+                            onStatisticField: "CNSTRCT_YR",
+                            outStatisticFieldName: "AVG_CNSTRCT_YR",
+                            statisticType: "avg"
+                        }
+                    ]
+                }));
                 return promiseUtils_1.eachAlways([
-                    layerView.queryFeatureCount(_this.createCountQuery()),
-                    layerView.queryFeatures(_this.createStatisticsQuery())
+                    buildStatsPromise,
+                    countPromise
                 ]);
             })
                 .then(function (results) { return _this.displayResults(results); });
-        };
-        CityStats.prototype.createCountQuery = function () {
-            return new Query({
-                where: "CNSTRCT_YR <= " + this.year,
-                geometry: this.view.extent
-            });
-        };
-        CityStats.prototype.createStatisticsQuery = function () {
-            return new Query({
-                where: "CNSTRCT_YR <= " + this.year,
-                geometry: this.view.extent,
-                outStatistics: [
-                    {
-                        onStatisticField: "HEIGHTROOF",
-                        outStatisticFieldName: "MAX_HEIGHTROOF",
-                        statisticType: "max"
-                    },
-                    {
-                        onStatisticField: "CNSTRCT_YR",
-                        outStatisticFieldName: "AVG_CNSTRCT_YR",
-                        statisticType: "avg"
-                    }
-                ]
-            });
         };
         CityStats.prototype.displayResults = function (results) {
             this.statistics = results[0].value && results[0].value[0].attributes;
