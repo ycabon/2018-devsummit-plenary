@@ -1,6 +1,5 @@
 
 import Map = require("esri/Map");
-import esriConfig = require("esri/config");
 
 import CSVLayer = require("esri/layers/CSVLayer");
 
@@ -32,8 +31,6 @@ let layer: CSVLayer;
 let header: Header;
 
 const mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
-
-esriConfig.workers.loaderUrl = "https://js.arcgis.com/4.7/dojo/dojo.js";
 
 (async () => {
 

@@ -10,7 +10,8 @@ var loaderConfig = {
     "esri-promise-compatibility": 1,
     "esri-workers-for-memory-layers": 1,
     "esri-featurelayer-webgl": 1,
-    "esri-workers": 1
+    "esri-workers": 1,
+    "esri-built": 0
   },
   paths: {
     app: `${path}/src/${appName}`,

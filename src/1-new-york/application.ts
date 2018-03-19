@@ -1,7 +1,6 @@
 
 import Map = require("esri/Map");
 import Viewpoint = require("esri/Viewpoint");
-import esriConfig = require("esri/config");
 
 import MapView = require("esri/views/MapView");
 
@@ -30,8 +29,6 @@ const slider = document.getElementById("slider") as HTMLInputElement;
 const sliderValue = document.getElementById("sliderValue");
 const playButton = document.getElementById("playButton");
 const titleDiv = document.getElementById("titleDiv");
-
-esriConfig.workers.loaderUrl = "https://js.arcgis.com/4.7/dojo/dojo.js";
 
 (async () => {
 
