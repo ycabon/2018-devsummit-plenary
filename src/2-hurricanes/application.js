@@ -33,7 +33,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic", "esri/Viewpoint", "esri/geometry/Circle", "esri/renderers/UniqueValueRenderer", "esri/symbols/PictureMarkerSymbol", "esri/views/MapView", "esri/widgets/Home", "esri/widgets/Zoom", "esri/widgets/Legend", "@dojo/core/util", "../widgets/Header", "../widgets/DropTarget", "../widgets/IconButton", "../widgets/ToggleIconButton", "../widgets/HurricaneInfo"], function (require, exports, Map, CSVLayer, Graphic, Viewpoint, Circle, UniqueValueRenderer, PictureMarkerSymbol, MapView, Home, Zoom, Legend, util_1, Header_1, DropTarget_1, IconButton_1, ToggleIconButton_1, HurricaneInfo_1) {
+define(["require", "exports", "esri/Map", "esri/config", "esri/layers/CSVLayer", "esri/Graphic", "esri/Viewpoint", "esri/geometry/Circle", "esri/renderers/UniqueValueRenderer", "esri/symbols/PictureMarkerSymbol", "esri/views/MapView", "esri/widgets/Home", "esri/widgets/Zoom", "esri/widgets/Legend", "@dojo/core/util", "../widgets/Header", "../widgets/DropTarget", "../widgets/IconButton", "../widgets/ToggleIconButton", "../widgets/HurricaneInfo"], function (require, exports, Map, esriConfig, CSVLayer, Graphic, Viewpoint, Circle, UniqueValueRenderer, PictureMarkerSymbol, MapView, Home, Zoom, Legend, util_1, Header_1, DropTarget_1, IconButton_1, ToggleIconButton_1, HurricaneInfo_1) {
     "use strict";
     var _this = this;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -42,6 +42,7 @@ define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic"
     var layer;
     var header;
     var mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
+    esriConfig.workers.loaderUrl = "https://js.arcgis.com/4.7/dojo/dojo.js";
     (function () { return __awaiter(_this, void 0, void 0, function () {
         var zoom, home, legend, target, bookmark1, bookmark2;
         return __generator(this, function (_a) {

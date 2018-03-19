@@ -74,6 +74,8 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                     statisticType: "avg"
                 }
             ];
+            // Execute the queries on the layerview
+            // instead of the layer
             var countPromise = layerView.queryFeatureCount(new Query({
                 where: where,
                 geometry: geometry

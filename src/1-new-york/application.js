@@ -33,7 +33,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/renderers/SimpleRenderer", "esri/widgets/Home", "esri/widgets/Expand", "esri/widgets/Zoom", "esri/widgets/Legend", "esri/widgets/Fullscreen", "../widgets/Header", "../widgets/CityStats", "../widgets/IconButton"], function (require, exports, Map, MapView, FeatureLayer, SimpleRenderer, Home, Expand, Zoom, Legend, FullScreen, Header_1, CityStats_1, IconButton_1) {
+define(["require", "exports", "esri/Map", "esri/config", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/renderers/SimpleRenderer", "esri/widgets/Home", "esri/widgets/Expand", "esri/widgets/Zoom", "esri/widgets/Legend", "esri/widgets/Fullscreen", "../widgets/Header", "../widgets/CityStats", "../widgets/IconButton"], function (require, exports, Map, esriConfig, MapView, FeatureLayer, SimpleRenderer, Home, Expand, Zoom, Legend, FullScreen, Header_1, CityStats_1, IconButton_1) {
     "use strict";
     var _this = this;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -47,6 +47,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
     var sliderValue = document.getElementById("sliderValue");
     var playButton = document.getElementById("playButton");
     var titleDiv = document.getElementById("titleDiv");
+    esriConfig.workers.loaderUrl = "https://js.arcgis.com/4.7/dojo/dojo.js";
     (function () { return __awaiter(_this, void 0, void 0, function () {
         // When user drags the slider:
         //  - stops the animation

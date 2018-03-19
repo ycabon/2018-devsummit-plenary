@@ -97,6 +97,8 @@ export default class CityStats extends declared(Widget) {
       }
     ];
 
+    // Execute the queries on the layerview
+    // instead of the layer
     const countPromise = layerView.queryFeatureCount(
       new Query({
         where,
