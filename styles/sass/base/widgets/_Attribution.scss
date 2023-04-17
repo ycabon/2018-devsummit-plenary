@@ -1,30 +1,28 @@
 @mixin attribution() {
-
   .esri-attribution {
-    font-size: 0.75em;
-    line-height: 16px;
-    color: $text_color;
-    background-color: rgba($background_color, 0.65);
+    font-size: $font-size--small;
+    line-height: 16px; // TODO: refactor to let Attribution inherit line-height.
+    background-color: rgba($background-color, 0.8);
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
   .esri-attribution__link {
-    :hover,
-    :active,
-    :visited,
-    :focus {
+    color: currentColor;
+    text-decoration: none;
+
+    &:hover,
+    &:active,
+    &:visited,
+    &:focus {
       color: currentColor;
     }
-    color: currentColor;
-    text-decoration: underline;
   }
 
   .esri-attribution__sources {
-    font-weight: 300;
+    font-weight: $font-weight--light;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -38,7 +36,7 @@
   }
 
   .esri-attribution__powered-by {
-    font-weight: 400;
+    font-weight: $font-weight;
     padding: 0 5px;
     text-align: right;
     white-space: nowrap;
@@ -51,12 +49,6 @@
 
   .esri-attribution__sources--open {
     white-space: normal;
-  }
-
-  html[dir="rtl"] {
-    .esri-attribution__powered-by {
-      text-align: left;
-    }
   }
 }
 

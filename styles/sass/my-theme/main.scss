@@ -36,3 +36,22 @@ $selected_background_color  : #000000;
     background: #181818
   }
 }
+
+.esri-widget-button {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  background-color: #181818;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 125ms ease-in-out;
+}

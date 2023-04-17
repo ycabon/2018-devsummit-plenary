@@ -7,14 +7,16 @@
   },
   "author": "esri",
   "devDependencies": {
-    "arcgis-js-api": "^4.6.1"
+    "arcgis-js-api": "^4.26.0"
   },
   "dependencies": {
-    "grunt": "^1.0.1",
+    "@esri/calcite-components": "^1.2.0",
+    "grunt": "^1.6.1",
     "grunt-browser-sync": "^2.2.0",
-    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-sass": "^2.0.0"
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-sass": "^3.1.0",
+    "sass": "^1.62.0"
   }
 }

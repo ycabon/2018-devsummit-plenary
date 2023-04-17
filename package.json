@@ -5,6 +5,8 @@
   "author": "Yann Cabon",
   "license": "MIT",
   "devDependencies": {
+    "@arcgis/cli": "^4.25.1",
+    "arcgis-js-api": "^4.26.5",
     "typescript": "^5.0.4"
   }
 }

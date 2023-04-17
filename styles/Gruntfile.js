@@ -1,3 +1,5 @@
+const sass = require('sass');
+
 module.exports = grunt => {
 
   grunt.loadNpmTasks("grunt-browser-sync");
@@ -55,6 +57,7 @@ module.exports = grunt => {
       },
 
       setup: {
+        
         options: {
 
           // move to `my-theme` file config when
@@ -106,7 +109,9 @@ module.exports = grunt => {
 
     sass: {
       options: {
-        outputStyle: "compressed"
+        implementation: sass,
+        outputStyle: "compressed",
+        includePaths: ["node_modules"],
       },
 
       dist: {

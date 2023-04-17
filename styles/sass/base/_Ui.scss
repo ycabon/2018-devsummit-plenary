@@ -1,4 +1,3 @@
-
 .esri-ui {
   position: absolute;
   left: 0;
@@ -7,6 +6,9 @@
   right: 0;
   box-sizing: border-box;
   pointer-events: none;
+  overflow: hidden;
+  font-size: $font-size;
+  z-index: 0; // creates root stacking context
 
   .esri-component {
     pointer-events: auto;
@@ -34,8 +36,15 @@
   right: 0;
 }
 
-.esri-ui-manual-container > .esri-component {
-  position: absolute;
+.esri-ui-manual-container {
+  & > .esri-component {
+    position: absolute;
+  }
+
+  /* swipe needs to be placed behind all UI components */
+  .esri-swipe {
+    z-index: -1;
+  }
 }
 
 // Top Corners
@@ -75,7 +84,7 @@
 
 .esri-ui-top-right .esri-component,
 .esri-ui-top-left .esri-component {
-  margin-bottom: 10px;
+  margin-bottom: $view-ui-spacing;
 }
 
 .esri-ui-bottom-left {
@@ -83,7 +92,7 @@
   left: 0;
 
   .esri-component {
-    margin-right: 10px;
+    margin-right: $view-ui-spacing;
   }
 }
 
@@ -92,20 +101,22 @@
   right: 0;
 
   .esri-component {
-    margin-left: 10px;
+    margin-left: $view-ui-spacing;
   }
 }
 
-html[dir="rtl"] {
+[dir="rtl"] {
   .esri-ui-top-left {
     align-items: flex-end;
   }
   .esri-ui-top-right {
     align-items: flex-start;
   }
-  .esri-ui-bottom-left,
-  .esri-ui-bottom-right {
+  .esri-ui-bottom-left {
     flex-direction: row-reverse;
+  }
+  .esri-ui-bottom-right {
+    flex-direction: row;
   }
 }
 
