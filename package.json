@@ -5,11 +5,6 @@
   "author": "Yann Cabon",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^2.7.2"
-  },
-  "dependencies": {
-    "@dojo/core": "^0.3.1",
-    "@dojo/has": "^0.1.2",
-    "@dojo/shim": "^0.2.5"
+    "typescript": "^5.0.4"
   }
 }

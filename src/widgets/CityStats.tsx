@@ -1,8 +1,6 @@
 /// <amd-dependency path="esri/core/tsSupport/declareExtendsHelper" name="__extends" />
 /// <amd-dependency path="esri/core/tsSupport/decorateHelper" name="__decorate" />
 
-import { throttle } from "@dojo/core/util";
-
 import { subclass, declared, property } from "esri/core/accessorSupport/decorators";
 import Widget = require("esri/widgets/Widget");
 import { renderable, tsx } from "esri/widgets/support/widget";
@@ -49,7 +47,7 @@ export default class CityStats extends declared(Widget) {
 
   @property()
   @renderable()
-  statistics: HashMap<number> = null;
+  statistics: HashMap<number> | null = null;
 
   @property()
   view: MapView;

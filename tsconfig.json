@@ -2,7 +2,7 @@
   "compileOnSave": true,
   "compilerOptions": {
 		"module": "amd",
-		"target": "es5",
+		"target": "ESNext",
 		"baseUrl": "node_modules",
 		"moduleResolution": "node",
     "jsx": "react",
@@ -11,18 +11,10 @@
     "experimentalDecorators": true,
     "noEmitHelpers": false,
     "noImplicitAny": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
 		"noImplicitThis": true,
 		"sourceMap": true,
-		"removeComments": false,
-		"lib": [
-			"dom",
-			"es5",
-			"es2015.iterable",
-			"es2015.promise",
-			"es2015.symbol",
-			"es2015.symbol.wellknown"
-		]
+		"removeComments": false
   },
   "include": [
     "./src/**/*.ts",

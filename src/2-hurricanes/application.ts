@@ -206,9 +206,9 @@ const mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
 
 })();
 
-let drawHandle: IHandle;
+let drawHandle: IHandle | null = null;
 let promise: IPromise;
-let highlight: IHandle;
+let highlight: IHandle | null = null;
 let info: HurricaneInfo;
 
 function toggleHighlighting() {
@@ -285,7 +285,7 @@ function toggleHighlighting() {
             });
           })
           .then((objectIds) => {
-            highlight && highlight.remove();
+            highlight?.remove();
             highlight = null;
 
             if (objectIds.length) {

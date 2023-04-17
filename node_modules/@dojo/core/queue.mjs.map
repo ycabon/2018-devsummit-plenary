@@ -1,1 +1,0 @@
-{"version":3,"file":"queue.mjs","sourceRoot":"","sources":["../../src/queue.ts"],"names":[],"mappings":"AAAA,cAAc,0BAA0B,CAAC","sourcesContent":["export * from '@dojo/shim/support/queue';\n"]}

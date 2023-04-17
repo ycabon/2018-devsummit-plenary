@@ -1,214 +1,169 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic", "esri/Viewpoint", "esri/geometry/Circle", "esri/renderers/UniqueValueRenderer", "esri/symbols/PictureMarkerSymbol", "esri/views/MapView", "esri/widgets/Home", "esri/widgets/Zoom", "esri/widgets/Legend", "@dojo/core/util", "../widgets/Header", "../widgets/DropTarget", "../widgets/IconButton", "../widgets/ToggleIconButton", "../widgets/HurricaneInfo"], function (require, exports, Map, CSVLayer, Graphic, Viewpoint, Circle, UniqueValueRenderer, PictureMarkerSymbol, MapView, Home, Zoom, Legend, util_1, Header_1, DropTarget_1, IconButton_1, ToggleIconButton_1, HurricaneInfo_1) {
     "use strict";
-    var _this = this;
     Object.defineProperty(exports, "__esModule", { value: true });
-    var map;
-    var view;
-    var layer;
-    var header;
-    var mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
-    (function () { return __awaiter(_this, void 0, void 0, function () {
-        var zoom, home, legend, target, bookmark1, bookmark2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    map = new Map({
-                        basemap: {
-                            portalItem: {
-                                // id: "5679afc165a841838d919bee62424422"
-                                id: "3113eacc129942b4abde490a51aeb33f"
-                            }
-                        }
-                    });
-                    view = new MapView({
-                        map: map,
-                        container: "viewDiv",
-                        highlightOptions: {
-                            color: "white"
-                        }
-                    });
-                    view.ui.empty("top-left");
-                    header = new Header_1.default({
-                        title: "Hurricanes",
-                        actionContent: [
-                            mobile ?
-                                new IconButton_1.default({
-                                    iconClass: "esri-icon-plus-circled",
-                                    action: addCSVLayer
-                                }) :
-                                new IconButton_1.default({
-                                    iconClass: "esri-icon-download",
-                                    title: "Download Hurricanes.csv",
-                                    action: function () {
-                                        window.open("src/2-hurricanes/Hurricanes.csv");
-                                    }
-                                }),
-                            new ToggleIconButton_1.default({
-                                iconClass: "esri-icon-locate",
-                                title: mobile ? "" : "Explore hurricanes",
-                                toggle: function () { return toggleHighlighting(); },
-                                enabled: false
-                            })
-                        ]
-                    });
-                    zoom = new Zoom({
-                        view: view,
-                        layout: "horizontal"
-                    });
-                    home = new Home({
-                        view: view
-                    });
-                    legend = new Legend({
-                        view: view
-                    });
-                    target = new DropTarget_1.default({
-                        view: view,
-                        drop: function (dataTransfer) {
-                            var files = dataTransfer.files;
-                            var file = files[0];
-                            layer = new CSVLayer({
-                                url: URL.createObjectURL(file),
-                                // "PROJCS[\"South Pole Stereographic_1\",GEOGCS[\"GCS WGS 1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Stereographic\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-145.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",-90.0],UNIT[\"Meter\",1.0]]"
-                                spatialReference: view.spatialReference,
-                                renderer: new UniqueValueRenderer({
-                                    field: "Category",
-                                    defaultSymbol: new PictureMarkerSymbol({
-                                        url: "src/2-hurricanes/CatTS.png"
-                                    }),
-                                    uniqueValueInfos: [
-                                        {
-                                            value: 1,
-                                            symbol: new PictureMarkerSymbol({
-                                                url: "src/2-hurricanes/Cat1.png"
-                                            })
-                                        },
-                                        {
-                                            value: 2,
-                                            symbol: new PictureMarkerSymbol({
-                                                url: "src/2-hurricanes/Cat2.png"
-                                            })
-                                        },
-                                        {
-                                            value: 3,
-                                            symbol: new PictureMarkerSymbol({
-                                                url: "src/2-hurricanes/Cat3.png"
-                                            })
-                                        },
-                                        {
-                                            value: 4,
-                                            symbol: new PictureMarkerSymbol({
-                                                url: "src/2-hurricanes/Cat4.png"
-                                            })
-                                        },
-                                        {
-                                            value: 5,
-                                            symbol: new PictureMarkerSymbol({
-                                                url: "src/2-hurricanes/Cat5.png"
-                                            })
-                                        }
-                                    ]
-                                })
-                            });
-                            return layer.load();
-                        }
-                    });
-                    view.ui.add(target);
-                    view.ui.add(header);
-                    view.ui.add(zoom, "bottom-left");
-                    view.ui.add(home, "bottom-left");
-                    return [4 /*yield*/, view.when()];
-                case 1:
-                    _a.sent();
-                    target.on("drop", function (event) {
-                        map.removeAll();
-                        map.add(event.item);
-                        header.actionContent[1].enabled = true;
-                    });
-                    bookmark1 = new IconButton_1.default({
-                        title: "Pacific",
-                        action: function () {
-                            view.goTo(new Viewpoint({
-                                rotation: 70,
-                                scale: 73957190.948944,
-                                targetGeometry: {
-                                    type: "point",
-                                    spatialReference: {
-                                        wkt: "PROJCS[\"South Pole Stereographic_1\",GEOGCS[\"GCS WGS 1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Stereographic\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-145.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",-90.0],UNIT[\"Meter\",1.0]]"
-                                    },
-                                    x: -15718279.325275715,
-                                    y: 5522067.915221284
-                                }
-                            }), {
-                                duration: 2000,
-                                easing: "ease-in-out"
-                            });
-                        }
-                    });
-                    bookmark2 = new IconButton_1.default({
-                        title: "Atlantic",
-                        action: function () {
-                            view.goTo(new Viewpoint({
-                                rotation: 289,
-                                scale: 36978595.474472,
-                                targetGeometry: {
-                                    type: "point",
-                                    spatialReference: {
-                                        wkt: "PROJCS[\"South Pole Stereographic_1\",GEOGCS[\"GCS WGS 1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Stereographic\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-145.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",-90.0],UNIT[\"Meter\",1.0]]"
-                                    },
-                                    x: 17983804.09858078,
-                                    y: 6259867.915768554
-                                }
-                            }), {
-                                duration: 2000,
-                                easing: "ease-in-out"
-                            });
-                        }
-                    });
-                    view.ui.add(bookmark1, "bottom-left");
-                    view.ui.add(bookmark2, "bottom-left");
-                    return [2 /*return*/];
+    let map;
+    let view;
+    let layer;
+    let header;
+    const mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
+    (async () => {
+        map = new Map({
+            basemap: {
+                portalItem: {
+                    // id: "5679afc165a841838d919bee62424422"
+                    id: "3113eacc129942b4abde490a51aeb33f"
+                }
             }
         });
-    }); })();
-    var drawHandle;
-    var promise;
-    var highlight;
-    var info;
+        view = new MapView({
+            map: map,
+            container: "viewDiv",
+            highlightOptions: {
+                color: "white"
+            }
+        });
+        view.ui.empty("top-left");
+        header = new Header_1.default({
+            title: "Hurricanes",
+            actionContent: [
+                mobile ?
+                    new IconButton_1.default({
+                        iconClass: "esri-icon-plus-circled",
+                        action: addCSVLayer
+                    }) :
+                    new IconButton_1.default({
+                        iconClass: "esri-icon-download",
+                        title: "Download Hurricanes.csv",
+                        action: () => {
+                            window.open("src/2-hurricanes/Hurricanes.csv");
+                        }
+                    }),
+                new ToggleIconButton_1.default({
+                    iconClass: "esri-icon-locate",
+                    title: mobile ? "" : "Explore hurricanes",
+                    toggle: () => toggleHighlighting(),
+                    enabled: false
+                })
+            ]
+        });
+        const zoom = new Zoom({
+            view,
+            layout: "horizontal"
+        });
+        const home = new Home({
+            view
+        });
+        const legend = new Legend({
+            view
+        });
+        const target = new DropTarget_1.default({
+            view,
+            drop: (dataTransfer) => {
+                const files = dataTransfer.files;
+                const file = files[0];
+                layer = new CSVLayer({
+                    url: URL.createObjectURL(file),
+                    // "PROJCS[\"South Pole Stereographic_1\",GEOGCS[\"GCS WGS 1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Stereographic\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-145.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",-90.0],UNIT[\"Meter\",1.0]]"
+                    spatialReference: view.spatialReference,
+                    renderer: new UniqueValueRenderer({
+                        field: "Category",
+                        defaultSymbol: new PictureMarkerSymbol({
+                            url: "src/2-hurricanes/CatTS.png"
+                        }),
+                        uniqueValueInfos: [
+                            {
+                                value: 1,
+                                symbol: new PictureMarkerSymbol({
+                                    url: "src/2-hurricanes/Cat1.png"
+                                })
+                            },
+                            {
+                                value: 2,
+                                symbol: new PictureMarkerSymbol({
+                                    url: "src/2-hurricanes/Cat2.png"
+                                })
+                            },
+                            {
+                                value: 3,
+                                symbol: new PictureMarkerSymbol({
+                                    url: "src/2-hurricanes/Cat3.png"
+                                })
+                            },
+                            {
+                                value: 4,
+                                symbol: new PictureMarkerSymbol({
+                                    url: "src/2-hurricanes/Cat4.png"
+                                })
+                            },
+                            {
+                                value: 5,
+                                symbol: new PictureMarkerSymbol({
+                                    url: "src/2-hurricanes/Cat5.png"
+                                })
+                            }
+                        ]
+                    })
+                });
+                return layer.load();
+            }
+        });
+        view.ui.add(target);
+        view.ui.add(header);
+        view.ui.add(zoom, "bottom-left");
+        view.ui.add(home, "bottom-left");
+        await view.when();
+        target.on("drop", (event) => {
+            map.removeAll();
+            map.add(event.item);
+            header.actionContent[1].enabled = true;
+        });
+        const bookmark1 = new IconButton_1.default({
+            title: "Pacific",
+            action() {
+                view.goTo(new Viewpoint({
+                    rotation: 70,
+                    scale: 73957190.948944,
+                    targetGeometry: {
+                        type: "point",
+                        spatialReference: {
+                            wkt: "PROJCS[\"South Pole Stereographic_1\",GEOGCS[\"GCS WGS 1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Stereographic\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-145.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",-90.0],UNIT[\"Meter\",1.0]]"
+                        },
+                        x: -15718279.325275715,
+                        y: 5522067.915221284
+                    }
+                }), {
+                    duration: 2000,
+                    easing: "ease-in-out"
+                });
+            }
+        });
+        const bookmark2 = new IconButton_1.default({
+            title: "Atlantic",
+            action() {
+                view.goTo(new Viewpoint({
+                    rotation: 289,
+                    scale: 36978595.474472,
+                    targetGeometry: {
+                        type: "point",
+                        spatialReference: {
+                            wkt: "PROJCS[\"South Pole Stereographic_1\",GEOGCS[\"GCS WGS 1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Stereographic\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-145.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",-90.0],UNIT[\"Meter\",1.0]]"
+                        },
+                        x: 17983804.09858078,
+                        y: 6259867.915768554
+                    }
+                }), {
+                    duration: 2000,
+                    easing: "ease-in-out"
+                });
+            }
+        });
+        view.ui.add(bookmark1, "bottom-left");
+        view.ui.add(bookmark2, "bottom-left");
+    })();
+    let drawHandle = null;
+    let promise;
+    let highlight = null;
+    let info;
     function toggleHighlighting() {
         if (drawHandle) {
             drawHandle.remove();
@@ -227,8 +182,8 @@ define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic"
         info = new HurricaneInfo_1.default();
         view.ui.add(info);
         view.whenLayerView(layer)
-            .then(function (layerView) {
-            var performStatistics = util_1.throttle(function (searchArea) {
+            .then((layerView) => {
+            var performStatistics = (0, util_1.throttle)((searchArea) => {
                 promise && promise.cancel();
                 promise = layer
                     .queryFeatures({
@@ -241,56 +196,56 @@ define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic"
                         }
                     ]
                 })
-                    .then(function (statistics) {
-                    var maxWind = statistics.features[0].attributes.max_wmo_wind;
+                    .then(statistics => {
+                    const maxWind = statistics.features[0].attributes.max_wmo_wind;
                     return layer.queryFeatures({
                         geometry: searchArea,
-                        where: "wmo_wind = " + maxWind,
+                        where: `wmo_wind = ${maxWind}`,
                         outFields: ["Serial_Num", "Name"]
                     })
-                        .then(function (maxWindFS) {
+                        .then(maxWindFS => {
                         if (!maxWindFS.features[0]) {
                             return null;
                         }
                         return {
-                            maxWind: maxWind,
+                            maxWind,
                             hurricane: maxWindFS.features[0]
                         };
                     });
                 })
-                    .then(function (result) {
+                    .then(result => {
                     if (!result) {
                         info.hurricane = null;
                         return [];
                     }
-                    var attr = result.hurricane.attributes;
+                    const attr = result.hurricane.attributes;
                     info.hurricane = {
                         name: attr.Name,
                         season: attr.Season,
                         maxWind: result.maxWind,
                     };
                     return layer.queryObjectIds({
-                        where: "Serial_Num = '" + attr.Serial_Num + "'"
+                        where: `Serial_Num = '${attr.Serial_Num}'`
                     });
                 })
-                    .then(function (objectIds) {
-                    highlight && highlight.remove();
+                    .then((objectIds) => {
+                    highlight?.remove();
                     highlight = null;
                     if (objectIds.length) {
                         highlight = layerView.highlight(objectIds);
                     }
                 })
-                    .catch(function (error) {
+                    .catch(error => {
                     if (error.dojoType) {
                         return;
                     }
                     console.error(error);
                 });
             }, 75);
-            drawHandle = view.on("drag", function (event) {
+            drawHandle = view.on("drag", (event) => {
                 event.stopPropagation();
                 view.graphics.removeAll();
-                var searchArea = new Circle({
+                const searchArea = new Circle({
                     center: view.toMap(event),
                     radius: 500000
                 });

@@ -22,7 +22,7 @@ let view: MapView;
 let layer: FeatureLayer;
 let cityStats: CityStats;
 
-let animation: IHandle = null;
+let animation: IHandle | null = null;
 
 const applicationDiv = document.getElementById("applicationDiv");
 const slider = document.getElementById("slider") as HTMLInputElement;
@@ -43,7 +43,7 @@ const titleDiv = document.getElementById("titleDiv");
     definitionExpression: "CNSTRCT_YR > 0",
     title: "Building Footprints",
     minScale: 72223.819286,
-    popupTemplate: null,
+    popupTemplate: undefined,
     outFields: [
       "HEIGHTROOF",
       "NUM_FLOORS",
