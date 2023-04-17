@@ -17,13 +17,16 @@ import Expand = require("esri/widgets/Expand");
 import Zoom = require("esri/widgets/Zoom");
 import Legend = require("esri/widgets/Legend");
 import FullScreen = require("esri/widgets/Fullscreen");
-import { throttle } from "@dojo/core/util";
 
-import Header from "../widgets/Header";
 import DropTarget from "../widgets/DropTarget";
+import Header from "../widgets/Header";
+import HurricaneInfo from "../widgets/HurricaneInfo";
 import IconButton from "../widgets/IconButton";
 import ToggleIconButton from "../widgets/ToggleIconButton";
-import HurricaneInfo from "../widgets/HurricaneInfo";
+import { debounce } from "esri/core/promiseUtils";
+import { Polygon } from "esri/geometry";
+import Color = require("esri/Color");
+import { SimpleFillSymbol } from "esri/symbols";
 
 let map: Map;
 let view: MapView;
@@ -47,7 +50,7 @@ const mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
     map: map,
     container: "viewDiv",
     highlightOptions: {
-      color: "white"
+      color: new Color("white")
     }
   });
 
@@ -99,6 +102,7 @@ const mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
         spatialReference: view.spatialReference,
         renderer: new UniqueValueRenderer({
           field: "Category",
+          orderByClassesEnabled: true,
           defaultSymbol: new PictureMarkerSymbol({
             url: "src/2-hurricanes/CatTS.png"
           }),
@@ -133,7 +137,7 @@ const mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
                 url: "src/2-hurricanes/Cat5.png"
               })
             }
-          ]
+          ].reverse()
         })
       });
 
@@ -207,7 +211,6 @@ const mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
 })();
 
 let drawHandle: IHandle | null = null;
-let promise: IPromise;
 let highlight: IHandle | null = null;
 let info: HurricaneInfo;
 
@@ -215,12 +218,10 @@ function toggleHighlighting() {
   if (drawHandle) {
     drawHandle.remove();
     drawHandle = null;
-    promise && promise.cancel();
-    promise = null;
     highlight && highlight.remove();
     view.graphics.removeAll();
-    view.ui.remove(info);
-    info = null;
+    view.ui.remove(info!);
+    info = null!;
     return;
   }
 
@@ -234,9 +235,8 @@ function toggleHighlighting() {
   view.whenLayerView(layer)
     .then((layerView: __esri.CSVLayerView) => {
 
-      var performStatistics = throttle((searchArea) => {
-        promise && promise.cancel();
-        promise = layer
+      var performStatistics = debounce((searchArea: Polygon) => {
+        return layer
           .queryFeatures({
             geometry: searchArea,
             outStatistics: [
@@ -298,7 +298,7 @@ function toggleHighlighting() {
             }
             console.error(error);
           });
-      }, 75);
+      });
 
       drawHandle = view.on("drag", (event) => {
         event.stopPropagation();
@@ -312,14 +312,13 @@ function toggleHighlighting() {
 
         view.graphics.add(new Graphic({
           geometry: searchArea,
-          symbol: {
-            type: "simple-fill",
+          symbol: new SimpleFillSymbol({
             style: "none",
             outline: {
               color: "dark-gray",
               width: 4
             }
-          }
+          })
         }));
 
         performStatistics(searchArea);
@@ -334,6 +333,7 @@ function addCSVLayer() {
     // "PROJCS[\"South Pole Stereographic_1\",GEOGCS[\"GCS WGS 1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Stereographic\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-145.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",-90.0],UNIT[\"Meter\",1.0]]"
     spatialReference: view.spatialReference,
     renderer: new UniqueValueRenderer({
+      orderByClassesEnabled: true,
       field: "Category",
       defaultSymbol: new PictureMarkerSymbol({
         url: "src/2-hurricanes/CatTS.png"
@@ -369,7 +369,7 @@ function addCSVLayer() {
             url: "src/2-hurricanes/Cat5.png"
           })
         }
-      ]
+      ].reverse()
     })
   });
 

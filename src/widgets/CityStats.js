@@ -1,15 +1,28 @@
-/// <amd-dependency path="esri/core/tsSupport/declareExtendsHelper" name="__extends" />
-/// <amd-dependency path="esri/core/tsSupport/decorateHelper" name="__decorate" />
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/core/tsSupport/decorateHelper", "esri/core/accessorSupport/decorators", "esri/widgets/Widget", "esri/widgets/support/widget", "esri/core/watchUtils", "esri/core/promiseUtils", "esri/tasks/support/Query"], function (require, exports, __extends, __decorate, decorators_1, Widget, widget_1, watchUtils_1, promiseUtils_1, Query) {
+define(["require", "exports", "esri/core/accessorSupport/decorators", "esri/core/promiseUtils", "esri/core/reactiveUtils", "esri/widgets/support/widget", "esri/widgets/Widget", "esri/rest/support/Query"], function (require, exports, decorators_1, promiseUtils_1, reactiveUtils_1, widget_1, Widget, Query) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    const CSS = {
+    var CSS = {
         base: "widgets-citystats",
         cardBlue: "widgets-citystats--cardBlue",
         cardGreen: "widgets-citystats--cardGreen",
@@ -18,44 +31,42 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
         cardTitle: "widgets-citystats--cardtitle",
         cardValue: "widgets-citystats--cardvalue",
     };
-    let CityStats = class CityStats extends (0, decorators_1.declared)(Widget) {
-        constructor(props) {
-            super(props);
+    var CityStats = /** @class */ (function (_super) {
+        __extends(CityStats, _super);
+        function CityStats(props) {
+            var _this = _super.call(this, props) || this;
+            // was a new demand of stats made
+            _this._refresh = false;
+            // promise to the current stats.
+            _this._statsPromise = null;
+            _this.iconClass = "esri-icon-dashboard";
+            _this.count = 0;
+            _this.statistics = null;
+            return _this;
         }
-        // was a new demand of stats made
-        _refresh = false;
-        // promise to the current stats.
-        _statsPromise;
-        iconClass = "esri-icon-dashboard";
-        layer;
-        count = 0;
-        statistics = null;
-        view;
-        /**
-         * Filtering construction year
-         */
-        year;
-        postInitialize() {
-            const view = this.view;
-            const updateCallback = () => this.updateStatistics();
-            (0, watchUtils_1.whenFalse)(this, "view.updating", updateCallback);
-            (0, watchUtils_1.watch)(this, "view.extent", updateCallback);
-            (0, watchUtils_1.watch)(this, "year", updateCallback);
-        }
-        updateStatistics() {
+        CityStats.prototype.postInitialize = function () {
+            var _this = this;
+            var updateCallback = function () { return _this.updateStatistics(); };
+            (0, reactiveUtils_1.when)(function () { return !_this.view.updating; }, updateCallback);
+            (0, reactiveUtils_1.watch)(function () { return _this.view.extent; }, updateCallback);
+            (0, reactiveUtils_1.watch)(function () { return _this.year; }, updateCallback);
+        };
+        CityStats.prototype.updateStatistics = function () {
+            var _this = this;
             if (this._statsPromise) {
                 this._refresh = true;
                 return;
             }
             this._refresh = false;
             this._statsPromise = this.view.whenLayerView(this.layer)
-                .then((layerView) => this.queryStatistics(layerView));
-        }
-        queryStatistics(layerView) {
+                .then(function (layerView) { return _this.queryStatistics(layerView); });
+        };
+        CityStats.prototype.queryStatistics = function (layerView) {
+            var _this = this;
             // Define query parameters
-            const where = `CNSTRCT_YR <= ${this.year}`;
-            const geometry = this.view.extent;
-            const outStatistics = [
+            var where = "CNSTRCT_YR <= ".concat(this.year);
+            var geometry = this.view.extent;
+            var outStatistics = [
                 {
                     onStatisticField: "HEIGHTROOF",
                     outStatisticFieldName: "MAX_HEIGHTROOF",
@@ -69,22 +80,22 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
             ];
             // Execute the queries on the layerview
             // instead of the layer
-            const countPromise = layerView.queryFeatureCount(new Query({
-                where,
-                geometry
+            var countPromise = layerView.queryFeatureCount(new Query({
+                where: where,
+                geometry: geometry
             }));
-            const buildStatsPromise = layerView.queryFeatures(new Query({
-                where,
-                geometry,
-                outStatistics
+            var buildStatsPromise = layerView.queryFeatures(new Query({
+                where: where,
+                geometry: geometry,
+                outStatistics: outStatistics
             }));
             return (0, promiseUtils_1.eachAlways)([
                 buildStatsPromise,
                 countPromise
             ])
-                .then((results) => this.displayResults(results));
-        }
-        displayResults(results) {
+                .then(function (results) { return _this.displayResults(results); });
+        };
+        CityStats.prototype.displayResults = function (results) {
             this.statistics = results[0].value && results[0].value[0].attributes;
             this.count = results[1].value;
             this._statsPromise = null;
@@ -92,10 +103,10 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
             if (this._refresh) {
                 this.updateStatistics();
             }
-        }
-        render() {
-            const classes = {};
-            const stats = this.statistics || {
+        };
+        CityStats.prototype.render = function () {
+            var classes = {};
+            var stats = this.statistics || {
                 AVG_NUM_FLOORS: 0,
                 MAX_HEIGHTROOF: 0,
                 AVG_CNSTRCT_YR: 0
@@ -112,31 +123,30 @@ define(["require", "exports", "esri/core/tsSupport/declareExtendsHelper", "esri/
                 (0, widget_1.tsx)("div", { class: CSS.cardOrange },
                     (0, widget_1.tsx)("div", { class: CSS.cardTitle }, "Avg Construction Year"),
                     (0, widget_1.tsx)("div", { class: CSS.cardValue }, Math.round(stats.AVG_CNSTRCT_YR)))));
-        }
-    };
-    __decorate([
-        (0, decorators_1.property)()
-    ], CityStats.prototype, "iconClass", void 0);
-    __decorate([
-        (0, decorators_1.property)()
-    ], CityStats.prototype, "layer", void 0);
-    __decorate([
-        (0, decorators_1.property)(),
-        (0, widget_1.renderable)()
-    ], CityStats.prototype, "count", void 0);
-    __decorate([
-        (0, decorators_1.property)(),
-        (0, widget_1.renderable)()
-    ], CityStats.prototype, "statistics", void 0);
-    __decorate([
-        (0, decorators_1.property)()
-    ], CityStats.prototype, "view", void 0);
-    __decorate([
-        (0, decorators_1.property)()
-    ], CityStats.prototype, "year", void 0);
-    CityStats = __decorate([
-        (0, decorators_1.subclass)("widgets.CityStats")
-    ], CityStats);
+        };
+        __decorate([
+            (0, decorators_1.property)()
+        ], CityStats.prototype, "iconClass", void 0);
+        __decorate([
+            (0, decorators_1.property)()
+        ], CityStats.prototype, "layer", void 0);
+        __decorate([
+            (0, decorators_1.property)()
+        ], CityStats.prototype, "count", void 0);
+        __decorate([
+            (0, decorators_1.property)()
+        ], CityStats.prototype, "statistics", void 0);
+        __decorate([
+            (0, decorators_1.property)()
+        ], CityStats.prototype, "view", void 0);
+        __decorate([
+            (0, decorators_1.property)()
+        ], CityStats.prototype, "year", void 0);
+        CityStats = __decorate([
+            (0, decorators_1.subclass)("widgets.CityStats")
+        ], CityStats);
+        return CityStats;
+    }(Widget));
     exports.default = CityStats;
 });
 //# sourceMappingURL=CityStats.js.map

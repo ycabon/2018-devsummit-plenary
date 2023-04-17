@@ -1,15 +1,11 @@
-/// <amd-dependency path="esri/core/tsSupport/declareExtendsHelper" name="__extends" />
-/// <amd-dependency path="esri/core/tsSupport/decorateHelper" name="__decorate" />
-
-import { subclass, declared, property } from "esri/core/accessorSupport/decorators";
-import Widget = require("esri/widgets/Widget");
-import { renderable, tsx } from "esri/widgets/support/widget";
-
-import Graphic = require("esri/Graphic");
-import { whenFalse, watch } from "esri/core/watchUtils";
+import { property, subclass } from "esri/core/accessorSupport/decorators";
 import { eachAlways } from "esri/core/promiseUtils";
+import { watch, when } from "esri/core/reactiveUtils";
+import { tsx } from "esri/widgets/support/widget";
+import Widget = require("esri/widgets/Widget");
+
 import FeatureLayer = require("esri/layers/FeatureLayer");
-import Query = require("esri/tasks/support/Query");
+import Query = require("esri/rest/support/Query");
 import MapView = require("esri/views/MapView");
 import FeatureLayerView = require("esri/views/layers/FeatureLayerView");
 
@@ -24,7 +20,7 @@ const CSS = {
 };
 
 @subclass("widgets.CityStats")
-export default class CityStats extends declared(Widget) {
+export default class CityStats extends Widget {
 
   constructor(props: Partial<CityStats>) {
     super(props);
@@ -33,7 +29,7 @@ export default class CityStats extends declared(Widget) {
   // was a new demand of stats made
   private _refresh = false;
   // promise to the current stats.
-  private _statsPromise: IPromise;
+  private _statsPromise: Promise<any> | null = null;
 
   @property()
   iconClass: string = "esri-icon-dashboard";
@@ -42,12 +38,10 @@ export default class CityStats extends declared(Widget) {
   layer: FeatureLayer;
 
   @property()
-  @renderable()
-  count: number = 0;
+    count: number = 0;
 
   @property()
-  @renderable()
-  statistics: HashMap<number> | null = null;
+    statistics: HashMap<number> | null = null;
 
   @property()
   view: MapView;
@@ -59,12 +53,11 @@ export default class CityStats extends declared(Widget) {
   year: number;
 
   postInitialize() {
-    const view = this.view;
     const updateCallback = () => this.updateStatistics();
 
-    whenFalse(this, "view.updating", updateCallback);
-    watch(this, "view.extent", updateCallback);
-    watch(this, "year", updateCallback);
+    when(() => !this.view.updating, updateCallback);
+    watch(() => this.view.extent, updateCallback);
+    watch(() => this.year, updateCallback);
   }
 
   updateStatistics() {
@@ -86,12 +79,12 @@ export default class CityStats extends declared(Widget) {
       {
         onStatisticField: "HEIGHTROOF",
         outStatisticFieldName: "MAX_HEIGHTROOF",
-        statisticType: "max"
+        statisticType: "max" as const
       },
       {
         onStatisticField: "CNSTRCT_YR",
         outStatisticFieldName: "AVG_CNSTRCT_YR",
-        statisticType: "avg"
+        statisticType: "avg" as const
       }
     ];
 

@@ -16,6 +16,9 @@ import FullScreen = require("esri/widgets/Fullscreen");
 import Header from "../widgets/Header";
 import CityStats from "../widgets/CityStats";
 import IconButton from "../widgets/IconButton";
+import { SimpleFillSymbol } from "esri/symbols";
+import OpacityVariable = require("esri/renderers/visualVariables/OpacityVariable");
+import ColorVariable = require("esri/renderers/visualVariables/ColorVariable");
 
 let map: Map;
 let view: MapView;
@@ -86,7 +89,7 @@ const titleDiv = document.getElementById("titleDiv");
    * Sets the current visualized construction year.
    */
   function setYear(value: number): void {
-    sliderValue.innerHTML = "" + Math.floor(value);
+    sliderValue!.innerHTML = "" + Math.floor(value);
     slider.value = "" + Math.floor(value);
     layer.renderer = createRenderer(value);
     cityStats.year = value;
@@ -95,8 +98,8 @@ const titleDiv = document.getElementById("titleDiv");
 
   // Toggle animation on/off when user
   // clicks on the play button
-  playButton.addEventListener("click", () => {
-    if (playButton.classList.contains("toggled")) {
+  playButton!.addEventListener("click", () => {
+    if (playButton!.classList.contains("toggled")) {
       stopAnimation();
     } else {
       startAnimation();
@@ -112,7 +115,7 @@ const titleDiv = document.getElementById("titleDiv");
     actionContent: [
       new FullScreen({
         view: view,
-        element: applicationDiv
+        element: applicationDiv!
       })
     ]
   });
@@ -201,7 +204,7 @@ const titleDiv = document.getElementById("titleDiv");
 function startAnimation() {
   stopAnimation();
   animation = animate(parseFloat(slider.value));
-  playButton.classList.add("toggled");
+  playButton!.classList.add("toggled");
 }
 
 /**
@@ -214,7 +217,7 @@ function stopAnimation() {
 
   animation.remove();
   animation = null;
-  playButton.classList.remove("toggled");
+  playButton!.classList.remove("toggled");
 }
 
 /**
@@ -226,13 +229,11 @@ function stopAnimation() {
  */
 function createRenderer(year: number) {
   return new SimpleRenderer({
-    symbol: {
-      type: "simple-fill",
+    symbol: new SimpleFillSymbol({
       color: "rgb(0, 0, 0)",
-      outline: null
-    },
-    visualVariables: [{
-      type: "opacity",
+      outline: null!
+    }),
+    visualVariables: [new OpacityVariable({
       field: "CNSTRCT_YR",
       stops: [{
         opacity: 1,
@@ -245,8 +246,7 @@ function createRenderer(year: number) {
       legendOptions: {
         showLegend: false
       }
-    }, {
-      type: "color",
+    }), new ColorVariable({
       field: "CNSTRCT_YR",
       legendOptions: {
         title: "Built:"
@@ -267,7 +267,7 @@ function createRenderer(year: number) {
         // color: [255, 255, 178, 100],
         label: "before " + (Math.floor(year) - 50)
       }]
-    }]
+    })]
   });
 }
 
@@ -277,7 +277,7 @@ function createRenderer(year: number) {
  */
 function setupHoverTooltip(layerview: __esri.FeatureLayerView) {
   const tooltip = createTooltip();
-  let highlight: IHandle;
+  let highlight: IHandle | null = null;
 
   view.on("pointer-move", (event) => {
 
@@ -293,8 +293,8 @@ function setupHoverTooltip(layerview: __esri.FeatureLayerView) {
           highlight = null;
         }
 
-        const results = hit.results.filter(function(result) {
-          return result.graphic.layer === layer;
+        const results = hit.results.filter(function(result): result is __esri.GraphicHit {
+          return result.type === "graphic" && result.graphic.layer === layer;
         });
 
         // highlight the hovered feature
@@ -322,7 +322,7 @@ function setupHoverTooltip(layerview: __esri.FeatureLayerView) {
  * Sets the current visualized construction year.
  */
 function setYear(value: number): void {
-  sliderValue.innerHTML = "" + Math.floor(value);
+  sliderValue!.innerHTML = "" + Math.floor(value);
   slider.value = "" + Math.floor(value);
   layer.renderer = createRenderer(value);
   cityStats.year = value;

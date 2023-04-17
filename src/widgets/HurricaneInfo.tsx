@@ -1,9 +1,6 @@
-/// <amd-dependency path="esri/core/tsSupport/declareExtendsHelper" name="__extends" />
-/// <amd-dependency path="esri/core/tsSupport/decorateHelper" name="__decorate" />
-
-import { subclass, declared, property } from "esri/core/accessorSupport/decorators";
+import { subclass, property } from "esri/core/accessorSupport/decorators";
 import Widget = require("esri/widgets/Widget");
-import { renderable, tsx } from "esri/widgets/support/widget";
+import { tsx } from "esri/widgets/support/widget";
 
 const CSS = {
   base: "widgets-hurricaneinfo",
@@ -22,18 +19,16 @@ interface HurricaneInfo<T> {
 }
 
 @subclass("widgets.HurricaneInfo")
-class HurricaneInfo<T = any> extends declared(Widget) {
-
+class HurricaneInfo<T = any> extends Widget {
   // constructor(props: Partial<Pick<HurricaneInfo<T>, "drop" | "view">>) {
   //   super(props as any);
   // }
   @property()
-  @renderable()
-  hurricane: HashMap<any>;
+  hurricane: HashMap<any> | null;
 
   render() {
     const classes = {
-      [CSS.visible]: this.hurricane != null
+      [CSS.visible]: this.hurricane != null,
     };
 
     const hurricane = this.hurricane;
@@ -41,19 +36,17 @@ class HurricaneInfo<T = any> extends declared(Widget) {
       <div class={CSS.modal}>
         <div class={CSS.hurricaneInfo}>
           <div class={CSS.hurricaneSeason}>{hurricane.season}</div>
-          <div class={CSS.hurricaneMaxWind}>{Math.round(hurricane.maxWind * 1.852) +" km/h"}</div>
+          <div class={CSS.hurricaneMaxWind}>
+            {Math.round(hurricane.maxWind * 1.852) + " km/h"}
+          </div>
         </div>
         <div class={CSS.hurricaneName}>{hurricane.name}</div>
       </div>
     );
 
     return (
-      <div bind={this}
-        classes={classes}
-        class={CSS.base}>
-        <div class={CSS.background}>
-          {renderedHurricanes}
-        </div>
+      <div bind={this} classes={classes} class={CSS.base}>
+        <div class={CSS.background}>{renderedHurricanes}</div>
       </div>
     );
   }

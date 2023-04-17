@@ -2,7 +2,7 @@
   "compileOnSave": true,
   "compilerOptions": {
 		"module": "amd",
-		"target": "ESNext",
+		"target": "ES5",
 		"baseUrl": "node_modules",
 		"moduleResolution": "node",
     "jsx": "react",

@@ -1,9 +1,6 @@
-/// <amd-dependency path="esri/core/tsSupport/declareExtendsHelper" name="__extends" />
-/// <amd-dependency path="esri/core/tsSupport/decorateHelper" name="__decorate" />
-
-import { subclass, declared, property } from "esri/core/accessorSupport/decorators";
+import { subclass, property } from "esri/core/accessorSupport/decorators";
 import Widget = require("esri/widgets/Widget");
-import { renderable, tsx } from "esri/widgets/support/widget";
+import { tsx } from "esri/widgets/support/widget";
 
 const CSS = {
   base: "widgets-drop-target",
@@ -31,7 +28,7 @@ interface DropTarget<T> {
 }
 
 @subclass("widgets.DropTarget")
-class DropTarget<T = any> extends declared(Widget) {
+class DropTarget<T = any> extends Widget {
 
   constructor(props: Partial<Pick<DropTarget<T>, "drop" | "view">>) {
     super(props as any);
@@ -70,12 +67,10 @@ class DropTarget<T = any> extends declared(Widget) {
   drop: (dataTransfer: DataTransfer) => T | IPromise<T> | Promise<T>;
 
   @property()
-  @renderable()
-  private state: "ready" | "dragging" | "hover" | "loading" = "ready";
+    private state: "ready" | "dragging" | "hover" | "loading" = "ready";
 
   @property()
-  @renderable()
-  private loading = false;
+    private loading = false;
 
   @property()
   view: any;
@@ -129,7 +124,7 @@ class DropTarget<T = any> extends declared(Widget) {
     const dataTransfer = event.dataTransfer;
 
     if (this.drop) {
-      const dropped = this.drop(dataTransfer);
+      const dropped = this.drop(dataTransfer!);
 
       if (isThenable(dropped)) {
         this.state = "loading";
