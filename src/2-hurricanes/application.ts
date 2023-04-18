@@ -98,6 +98,7 @@ const mobile = !!navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
 
       layer = new CSVLayer({
         url: URL.createObjectURL(file),
+        outFields: ["*"],
         // "PROJCS[\"South Pole Stereographic_1\",GEOGCS[\"GCS WGS 1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Stereographic\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-145.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",-90.0],UNIT[\"Meter\",1.0]]"
         spatialReference: view.spatialReference,
         renderer: new UniqueValueRenderer({
@@ -253,7 +254,7 @@ function toggleHighlighting() {
             return layer.queryFeatures({
               geometry: searchArea,
               where: `wmo_wind = ${maxWind}`,
-              outFields: ["Serial_Num", "Name"]
+              outFields: ["Serial_Num", "Name", "Season"]
             })
               .then(maxWindFS => {
                 if (!maxWindFS.features[0]) {
@@ -321,7 +322,7 @@ function toggleHighlighting() {
           })
         }));
 
-        performStatistics(searchArea);
+        performStatistics(searchArea).catch(() => {});
       });
     });
 }
@@ -330,6 +331,7 @@ function toggleHighlighting() {
 function addCSVLayer() {
   layer = new CSVLayer({
     url: "src/2-hurricanes/Hurricanes.csv",
+    outFields: ["*"],
     // "PROJCS[\"South Pole Stereographic_1\",GEOGCS[\"GCS WGS 1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Stereographic\"],PARAMETER[\"False_Easting\",0.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",-145.0],PARAMETER[\"Scale_Factor\",1.0],PARAMETER[\"Latitude_Of_Origin\",-90.0],UNIT[\"Meter\",1.0]]"
     spatialReference: view.spatialReference,
     renderer: new UniqueValueRenderer({

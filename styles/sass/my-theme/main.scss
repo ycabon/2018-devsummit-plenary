@@ -13,6 +13,7 @@ $text_color              : rgb(211, 211, 211);
 $background_color        : #181818;
 
 $anchor_color            : white;
+$text_color: white;
 
 $anchor_hover_color      : rgba($anchor_color, 0.75);
 $button_text_color       : $anchor_color;
@@ -27,6 +28,16 @@ $selected_background_color  : #000000;
 
 .esri-view {
   background: black;
+}
+
+.esri-widget--button {
+  color: white;
+}
+.esri-widget--button:hover {
+  color: white;
+}
+.esri-widget--button:active {
+  background-color: inherit;
 }
 
 

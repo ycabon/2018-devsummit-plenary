@@ -1,7 +1,6 @@
 .widgets-toggleiconbutton {
   width: auto;
   border-radius: 4px;
-  padding-top: 5px;
   padding-left: 12px;
   padding-right: 12px;
 
@@ -23,6 +22,10 @@
 .widgets-toggleiconbutton--content {
   order: 1;
   flex: 1 1 100%;
+}
+
+.widgets-toggleiconbutton--content > .esri-icon {
+  margin-top: 8px;
 }
 
 .widgets-toggleiconbutton--content > .esri-icon ~ span {
