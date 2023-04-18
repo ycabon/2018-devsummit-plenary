@@ -275,6 +275,7 @@ define(["require", "exports", "esri/Map", "esri/layers/CSVLayer", "esri/Graphic"
                     highlight === null || highlight === void 0 ? void 0 : highlight.remove();
                     highlight = null;
                     if (objectIds.length) {
+                        console.log(objectIds);
                         highlight = layerView.highlight(objectIds);
                     }
                 })

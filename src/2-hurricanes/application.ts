@@ -290,6 +290,7 @@ function toggleHighlighting() {
             highlight = null;
 
             if (objectIds.length) {
+              console.log(objectIds);
               highlight = layerView.highlight(objectIds);
             }
           })

@@ -96,7 +96,7 @@ define(["require", "exports", "esri/core/accessorSupport/decorators", "esri/core
                 .then(function (results) { return _this.displayResults(results); });
         };
         CityStats.prototype.displayResults = function (results) {
-            this.statistics = results[0].value && results[0].value[0].attributes;
+            this.statistics = results[0].value && results[0].value.attributes;
             this.count = results[1].value;
             this._statsPromise = null;
             // if a stats has been asked, start a new batch
