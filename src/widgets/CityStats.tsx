@@ -1,5 +1,5 @@
 import { property, subclass } from "esri/core/accessorSupport/decorators";
-import { eachAlways } from "esri/core/promiseUtils";
+import { debounce, eachAlways } from "esri/core/promiseUtils";
 import { watch, when } from "esri/core/reactiveUtils";
 import { tsx } from "esri/widgets/support/widget";
 import Widget = require("esri/widgets/Widget");
@@ -26,11 +26,6 @@ export default class CityStats extends Widget {
     super(props);
   }
 
-  // was a new demand of stats made
-  private _refresh = false;
-  // promise to the current stats.
-  private _statsPromise: Promise<any> | null = null;
-
   @property()
   iconClass: string = "esri-icon-dashboard";
 
@@ -53,23 +48,17 @@ export default class CityStats extends Widget {
   year: number;
 
   postInitialize() {
-    const updateCallback = () => this.updateStatistics();
+    const updateCallback = () => this.updateStatistics().catch(() => {});
 
     when(() => !this.view.updating, updateCallback);
     watch(() => this.view.extent, updateCallback);
     watch(() => this.year, updateCallback);
   }
 
-  updateStatistics() {
-    if (this._statsPromise) {
-      this._refresh = true;
-      return;
-    }
-
-    this._refresh = false;
-    this._statsPromise = this.view.whenLayerView(this.layer)
+  updateStatistics = debounce(() => {
+    return this.view.whenLayerView(this.layer)
       .then((layerView: FeatureLayerView) => this.queryStatistics(layerView));
-  }
+  });
 
   queryStatistics(layerView: FeatureLayerView) {
     // Define query parameters
@@ -115,12 +104,6 @@ export default class CityStats extends Widget {
   displayResults(results: any): any {
     this.statistics = results[0].value && results[0].value.attributes;
     this.count = results[1].value;
-
-    this._statsPromise = null;
-    // if a stats has been asked, start a new batch
-    if (this._refresh) {
-      this.updateStatistics();
-    }
   }
 
   render() {

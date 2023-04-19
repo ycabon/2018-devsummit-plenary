@@ -35,31 +35,21 @@ define(["require", "exports", "esri/core/accessorSupport/decorators", "esri/core
         __extends(CityStats, _super);
         function CityStats(props) {
             var _this = _super.call(this, props) || this;
-            // was a new demand of stats made
-            _this._refresh = false;
-            // promise to the current stats.
-            _this._statsPromise = null;
             _this.iconClass = "esri-icon-dashboard";
             _this.count = 0;
             _this.statistics = null;
+            _this.updateStatistics = (0, promiseUtils_1.debounce)(function () {
+                return _this.view.whenLayerView(_this.layer)
+                    .then(function (layerView) { return _this.queryStatistics(layerView); });
+            });
             return _this;
         }
         CityStats.prototype.postInitialize = function () {
             var _this = this;
-            var updateCallback = function () { return _this.updateStatistics(); };
+            var updateCallback = function () { return _this.updateStatistics().catch(function () { }); };
             (0, reactiveUtils_1.when)(function () { return !_this.view.updating; }, updateCallback);
             (0, reactiveUtils_1.watch)(function () { return _this.view.extent; }, updateCallback);
             (0, reactiveUtils_1.watch)(function () { return _this.year; }, updateCallback);
-        };
-        CityStats.prototype.updateStatistics = function () {
-            var _this = this;
-            if (this._statsPromise) {
-                this._refresh = true;
-                return;
-            }
-            this._refresh = false;
-            this._statsPromise = this.view.whenLayerView(this.layer)
-                .then(function (layerView) { return _this.queryStatistics(layerView); });
         };
         CityStats.prototype.queryStatistics = function (layerView) {
             var _this = this;
@@ -98,11 +88,6 @@ define(["require", "exports", "esri/core/accessorSupport/decorators", "esri/core
         CityStats.prototype.displayResults = function (results) {
             this.statistics = results[0].value && results[0].value.attributes;
             this.count = results[1].value;
-            this._statsPromise = null;
-            // if a stats has been asked, start a new batch
-            if (this._refresh) {
-                this.updateStatistics();
-            }
         };
         CityStats.prototype.render = function () {
             var classes = {};
