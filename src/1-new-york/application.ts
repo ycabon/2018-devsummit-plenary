@@ -174,18 +174,18 @@ const titleDiv = document.getElementById("titleDiv");
    * Stats
    **********************/
 
-  // cityStats = new CityStats({
-  //   view: view,
-  //   layer: layer,
-  // });
+  cityStats = new CityStats({
+    view: view,
+    layer: layer,
+  });
 
-  // view.ui.add(
-  //   new Expand({
-  //     view: view,
-  //     content: cityStats
-  //   }),
-  //   "bottom-right"
-  // );
+  view.ui.add(
+    new Expand({
+      view: view,
+      content: cityStats
+    }),
+    "bottom-right"
+  );
 
   /**********************
    * Interactivity

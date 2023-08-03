@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/renderers/SimpleRenderer", "esri/widgets/Home", "esri/widgets/Expand", "esri/widgets/Zoom", "esri/widgets/Legend", "esri/widgets/Fullscreen", "../widgets/Header", "../widgets/IconButton", "esri/symbols", "esri/renderers/visualVariables/OpacityVariable", "esri/renderers/visualVariables/ColorVariable"], function (require, exports, Map, MapView, FeatureLayer, SimpleRenderer, Home, Expand, Zoom, Legend, FullScreen, Header_1, IconButton_1, symbols_1, OpacityVariable, ColorVariable) {
+define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/renderers/SimpleRenderer", "esri/widgets/Home", "esri/widgets/Expand", "esri/widgets/Zoom", "esri/widgets/Legend", "esri/widgets/Fullscreen", "../widgets/Header", "../widgets/CityStats", "../widgets/IconButton", "esri/symbols", "esri/renderers/visualVariables/OpacityVariable", "esri/renderers/visualVariables/ColorVariable"], function (require, exports, Map, MapView, FeatureLayer, SimpleRenderer, Home, Expand, Zoom, Legend, FullScreen, Header_1, CityStats_1, IconButton_1, symbols_1, OpacityVariable, ColorVariable) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var map;
@@ -167,17 +167,14 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/layers/Fea
                     /**********************
                      * Stats
                      **********************/
-                    // cityStats = new CityStats({
-                    //   view: view,
-                    //   layer: layer,
-                    // });
-                    // view.ui.add(
-                    //   new Expand({
-                    //     view: view,
-                    //     content: cityStats
-                    //   }),
-                    //   "bottom-right"
-                    // );
+                    cityStats = new CityStats_1.default({
+                        view: view,
+                        layer: layer,
+                    });
+                    view.ui.add(new Expand({
+                        view: view,
+                        content: cityStats
+                    }), "bottom-right");
                     /**********************
                      * Interactivity
                      **********************/

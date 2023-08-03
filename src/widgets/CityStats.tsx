@@ -102,7 +102,7 @@ export default class CityStats extends Widget {
   }
 
   displayResults(results: any): any {
-    this.statistics = results[0].value && results[0].value.attributes;
+    this.statistics = results[0].value.features[0].attributes;
     this.count = results[1].value;
   }
 

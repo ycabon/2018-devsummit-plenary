@@ -86,7 +86,7 @@ define(["require", "exports", "esri/core/accessorSupport/decorators", "esri/core
                 .then(function (results) { return _this.displayResults(results); });
         };
         CityStats.prototype.displayResults = function (results) {
-            this.statistics = results[0].value && results[0].value.attributes;
+            this.statistics = results[0].value.features[0].attributes;
             this.count = results[1].value;
         };
         CityStats.prototype.render = function () {
