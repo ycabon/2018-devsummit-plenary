@@ -4,7 +4,7 @@ var path = href.substring(0, href.lastIndexOf('/'));
 
 var loaderConfig = {
   paths: {
-    esri: "https://js.arcgis.com/4.2/esri/",
+    esri: "https://js.arcgis.com/4.27/esri/",
     app: `${path}/src/${appName}`
   },
   baseUrl: `${path}/src/`,
